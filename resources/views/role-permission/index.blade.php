@@ -46,12 +46,14 @@ $(document).on('click', '.child-permission', function() {
 $(document).on('click', '.btn-create', function() {
     $('#modalLabel').text('Create Role')
     $('#btn-submit').text('Save')
+    $('#form-data')[0].reset()
     $('#form-data').attr({'action':$(this).attr('data-url'),'data-method':'POST'})
 })
 
 $(document).on('click', '.btn-edit', function() {
     $('#modalLabel').text('Edit Role')
     $('#btn-submit').text('Update')
+    $('#form-data')[0].reset()
     $('#form-data').attr({'action':$(this).attr('data-url'),'data-method':'PUT'})
     getData($(this).attr('data-url'))
 })

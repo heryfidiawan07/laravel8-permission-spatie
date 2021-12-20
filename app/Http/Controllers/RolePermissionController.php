@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\Permission;
 use App\DataTables\RoleDataTable;
 use App\Http\Requests\RoleRequest;
 use App\Http\Controllers\Controller;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 
 class RolePermissionController extends Controller

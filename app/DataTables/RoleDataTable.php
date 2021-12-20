@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use App\DataTables\UserDataTable;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -19,6 +19,8 @@ class UserController extends Controller
 
     public function index(UserDataTable $dataTable)
     {
+        // Example get permission from user => model_has_permissions
+        // dd(auth()->user()->getPermissionNames()->toArray());
         if(! auth()->user()->can('user-menu')) {
             abort(403);
         }
@@ -31,6 +33,8 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
+        // Example add permission to user
+        // dd(auth()->user()->givePermissionTo('user-menu'));
         if(! auth()->user()->can('create-user')) {
             abort(403);
         }
@@ -80,6 +84,10 @@ class UserController extends Controller
 
     public function show($id)
     {
+        if(! auth()->user()->can('edit-user')) {
+            abort(403);
+        }
+        
         $user = User::findOrFail($id);
         return [
             'user' => $user,
@@ -111,7 +119,7 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-            $permissions = \Spatie\Permission\Models\Permission::get();
+            $permissions = \App\Models\Permission::get();
             if(!$permissions->count()) {
                 $data = [
                     ['name'=>'user-menu','guard_name'=>'web'],
@@ -125,13 +133,13 @@ class UserController extends Controller
                 ];
                 foreach($data as $key => $row) {
                     if($key > 1 && strpos($row['name'], 'user') !== false) {
-                        $row['parent_id'] = \Spatie\Permission\Models\Permission::first()->id;
+                        $row['parent_id'] = \App\Models\Permission::whereName('user-menu')->first()->id;
                     }elseif($key > 1 && strpos($row['name'], 'role') !== false) {
-                        $row['parent_id'] = \Spatie\Permission\Models\Permission::skip(1)->first()->id;
+                        $row['parent_id'] = \App\Models\Permission::whereName('role-menu')->first()->id;
                     }
-                    \Spatie\Permission\Models\Permission::create($row);
+                    \App\Models\Permission::create($row);
                 }
-                $permissions = \Spatie\Permission\Models\Permission::get();
+                $permissions = \App\Models\Permission::get();
             }
 
             $role = Role::whereName('Super Admin')->first();

@@ -26,16 +26,10 @@ class UserRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|unique:users',
-            'email' => 'required|unique:users',
+            'name' => ['required', Rule::unique('users')->ignore($this->user)],
+            'email' => ['required|email', Rule::unique('users')->ignore($this->user)],
+            'roles' => 'array|required',
         ];
-
-        $rules['roles'] = 'array|required';
-
-        if ($this->method() == 'PUT') {
-            $rules['name'] = ['required', Rule::unique('users', 'name')->ignore($this->user)];
-            $rules['email'] = ['required', Rule::unique('users', 'email')->ignore($this->user)];
-        }
 
         if ($this->method() == 'POST') {
             $rules['password'] = 'required|confirmed|min:6';
