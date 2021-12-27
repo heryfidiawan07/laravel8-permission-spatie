@@ -9,7 +9,7 @@ use App\Http\Requests\RoleRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class RolePermissionController extends Controller
+class RoleController extends Controller
 {
     public function __construct()
     {
@@ -22,7 +22,7 @@ class RolePermissionController extends Controller
             abort(403);
         }
 
-        return $dataTable->render('role-permission.index', [
+        return $dataTable->render('role.index', [
             'roles' => Role::get(),
             'permissions' => Permission::has('children')->get(),
         ]);
@@ -53,7 +53,7 @@ class RolePermissionController extends Controller
         }
     }
 
-    public function update(RoleRequest $request, $id)
+    public function update(RoleRequest $request, Role $role)
     {
         if(! auth()->user()->can('edit-role')) {
             abort(403);
@@ -65,7 +65,6 @@ class RolePermissionController extends Controller
             unset($valid['permissions']);
             $valid['guard_name'] = request('guard_name') ?? 'web';
 
-            $role = Role::findOrFail($id);
             $role->update($valid);
             $role->syncPermissions(request('permissions'));
 
@@ -77,16 +76,15 @@ class RolePermissionController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Role $role)
     {
-        $role = Role::findOrFail($id);
         return [
             'role' => $role,
             'permissions' => $role->getPermissionNames(),
         ];
     }
 
-    public function destroy($id)
+    public function destroy(Role $role)
     {
         if(! auth()->user()->can('delete-role')) {
             abort(403);
@@ -94,7 +92,6 @@ class RolePermissionController extends Controller
 
         DB::beginTransaction();
         try {
-            $role = Role::findOrFail($id);
             $role->syncPermissions([]);
             $role->delete();
 

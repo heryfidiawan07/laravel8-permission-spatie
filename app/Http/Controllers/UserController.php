@@ -56,7 +56,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, User $user)
     {
         if(! auth()->user()->can('edit-user')) {
             abort(403);
@@ -70,7 +70,6 @@ class UserController extends Controller
                 $valid['password'] = Hash::make(request('password'));
             }
 
-            $user = User::findOrFail($id);
             $user->update($valid);
             $user->syncRoles(request('roles'));
 
@@ -82,20 +81,19 @@ class UserController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(User $user)
     {
         if(! auth()->user()->can('edit-user')) {
             abort(403);
         }
         
-        $user = User::findOrFail($id);
         return [
             'user' => $user,
             'roles' => $user->getRoleNames(),
         ];
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
         if(! auth()->user()->can('delete-user')) {
             abort(403);
@@ -103,7 +101,6 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
-            $user = User::findOrFail($id);
             $user->syncRoles([]);
             $user->delete();
 

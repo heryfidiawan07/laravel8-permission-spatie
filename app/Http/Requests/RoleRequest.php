@@ -25,10 +25,10 @@ class RoleRequest extends FormRequest
      */
     public function rules()
     {
-        // dd($this->role_permission);
+        // dd($this->role);
         $rules = [
-            'name' => ['required', Rule::unique('roles')->ignore($this->role_permission)],
-            'permissions' => 'array|required',
+            'name' => ['required', Rule::unique('roles')->ignore($this->role)],
+            'permissions' => ['array','required'],
         ];
 
         return $rules;

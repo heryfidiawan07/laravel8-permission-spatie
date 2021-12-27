@@ -4,7 +4,7 @@
             <small class="d-block text-secondary mb-2 text-uppercase">User & Permission</small>
             <div class="list-group">
                 @can('role-menu')
-                    <a href="{{ route('role-permission.index') }}" class="list-group-item list-group-item-action">Role</a>
+                    <a href="{{ route('role.index') }}" class="list-group-item list-group-item-action">Role</a>
                 @endcan
                 @can('user-menu')
                     <a href="{{ route('user.index') }}" class="list-group-item list-group-item-action">User</a>

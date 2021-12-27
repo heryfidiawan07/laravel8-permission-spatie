@@ -5,7 +5,7 @@
     <div class="card-header">
         Table of Role
         <button type="button" class="btn btn-primary btn-sm float-end btn-create" 
-            data-bs-toggle="modal" data-bs-target="#form-modal" data-url="{{ route('role-permission.store') }}">
+            data-bs-toggle="modal" data-bs-target="#form-modal" data-url="{{ route('role.store') }}">
             Create Role
         </button>
     </div>
@@ -13,7 +13,7 @@
         {!! $dataTable->table() !!}
     </div>
 </div>
-@include('role-permission.form-modal')
+@include('role.form-modal')
 @endsection
 
 @push('styles')

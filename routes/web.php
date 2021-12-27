@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\{Route, Auth};
 use App\Http\Controllers\{
-    HomeController, UserController, RolePermissionController
+    HomeController, RoleController, UserController
 };
 
 Route::get('/', function () {
@@ -11,10 +11,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::view('dashboard', 'dashboard')->name('dashboard');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::resource('role-permission', RolePermissionController::class, ['except' => ['create','edit']]);
+// User & Role - Permission
+Route::resource('role', RoleController::class, ['except' => ['create','edit']]);
 Route::resource('user', UserController::class, ['except' => ['create','edit']]);
 
 // Set Super Admin

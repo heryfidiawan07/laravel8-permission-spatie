@@ -27,8 +27,8 @@ class RoleDataTable extends DataTable
             })
             ->addColumn('action', function($row) {
                 $html = '<div class="d-flex">'; 
-                $html .= '<button type="button" class="btn btn-primary btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#form-modal" data-url="'.route('role-permission.update', $row).'">Edit</button>';
-                $html .= '<button type="button" class="btn btn-danger btn-sm btn-delete ms-1" data-url="'.route('role-permission.destroy', $row).'">Delete</button>';
+                $html .= '<button type="button" class="btn btn-primary btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#form-modal" data-url="'.route('role.update', $row).'">Edit</button>';
+                $html .= '<button type="button" class="btn btn-danger btn-sm btn-delete ms-1" data-url="'.route('role.destroy', $row).'">Delete</button>';
                 $html .= '</div>';
                 return $html;
             });
